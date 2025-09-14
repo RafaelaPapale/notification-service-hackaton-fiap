@@ -1,98 +1,158 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 📬 Notification Service
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Serviço de **notificação** em **NestJS + TypeScript** que escuta eventos via **Kafka** e envia notificações por **e-mail** (com templates dinâmicos).  
+Também permite disparar notificações manualmente por endpoint HTTP.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## 🔹 Funcionalidades
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- Escuta eventos de vídeo em um **tópico Kafka** único (`video-events`);
+- Suporta múltiplos tipos de eventos via campo `eventType`:
+  - `VIDEO_PROCESSED` → Vídeo processado com sucesso ✅
+  - `VIDEO_FAILED` → Falha no processamento ❌
+- Envia e-mails com **templates diferentes** para cada tipo de evento;
+- Exposição de **endpoint REST** para disparar notificações manualmente (`POST /notifications`);
+- Estruturado seguindo princípios de **Clean Architecture**:
+  - `domain/` → entidades e contratos  
+  - `application/` → casos de uso  
+  - `infrastructure/` → adaptadores (Kafka, Mail, Controllers)
 
-## Project setup
+---
 
-```bash
-$ npm install
+## 🔹 Arquitetura
+
 ```
 
-## Compile and run the project
+src/
+domain/            # entidades e regras de negócio
+application/       # casos de uso
+infrastructure/    # kafka, mail, controllers
+dto/               # validações de entrada
+main.ts
+app.module.ts
+templates/           # templates Handlebars para e-mail
 
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
 
-## Run tests
+---
+
+## 🔹 Pré-requisitos
+
+- [Node.js 18+](https://nodejs.org/en)
+- [Docker](https://www.docker.com/) (para Kafka + MailHog)
+- [NestJS CLI](https://docs.nestjs.com/cli/overview) (opcional)
+
+---
+
+## 🔹 Setup do projeto
+
+Clone o repositório e instale dependências:
 
 ```bash
-# unit tests
-$ npm run test
+git clone git@github.com:seuuser/notification-service.git
+cd notification-service
+npm install
+````
 
-# e2e tests
-$ npm run test:e2e
+---
 
-# test coverage
-$ npm run test:cov
+## 🔹 Variáveis de ambiente
+
+Configure o arquivo `.env`:
+
+```env
+PORT=3000
+
+# Kafka
+KAFKA_BROKERS=localhost:9092
+KAFKA_GROUP_ID=notification-service
+KAFKA_TOPIC=video-events
+
+# SMTP (usando MailHog para dev)
+SMTP_HOST=localhost
+SMTP_PORT=1025
+FROM_EMAIL=no-reply@example.com
 ```
 
-## Deployment
+---
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+## 🔹 Subindo dependências (Kafka + MailHog)
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+docker-compose up -d
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+* Kafka: `localhost:9092`
+* MailHog UI: [http://localhost:8025](http://localhost:8025)
 
-## Resources
+---
 
-Check out a few resources that may come in handy when working with NestJS:
+## 🔹 Rodando a aplicação
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+```bash
+npm run start:dev
+```
 
-## Support
+A aplicação iniciará em [http://localhost:3000](http://localhost:3000)
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+---
 
-## Stay in touch
+## 🔹 Endpoint HTTP
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```http
+POST /notifications
+Content-Type: application/json
+```
 
-## License
+### Exemplo de payload:
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+```json
+{
+  "eventId": "evt-123",
+  "eventType": "VIDEO_FAILED",
+  "timestamp": "2025-09-14T12:00:00Z",
+  "user": {
+    "id": "u1",
+    "name": "Rafa",
+    "email": "teste@exemplo.com"
+  },
+  "data": {
+    "videoId": "vid-2",
+    "videoTitle": "Aula de NestJS",
+    "errorMessage": "Timeout"
+  }
+}
+```
+
+---
+
+## 🔹 Testando via Kafka Producer
+
+Exemplo de script (já incluso no projeto em `src/tools/producer.ts`):
+
+```bash
+npm run produce
+```
+
+Isso enviará uma mensagem de teste para o tópico Kafka configurado.
+
+---
+
+## 🔹 Templates de e-mail
+
+* `templates/video_processed.hbs`
+* `templates/video_failed.hbs`
+
+Use [Handlebars](https://handlebarsjs.com/) para personalizar os templates.
+
+---
+
+## 🔹 Próximos passos (Melhorias)
+
+* Suporte a **push notifications** e **webhooks** além de e-mail.
+* Retry com DLQ no Kafka.
+* Observabilidade (Prometheus, Grafana, OpenTelemetry).
+* Integração com provedores de e-mail em produção (SendGrid, SES, etc).
+
+---

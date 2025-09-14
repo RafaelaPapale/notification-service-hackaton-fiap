@@ -4,7 +4,7 @@ import * as fs from 'fs/promises';
 import * as path from 'path';
 import * as handlebars from 'handlebars';
 import { ConfigService } from '@nestjs/config';
-import { EventPayload, EventType } from '../../domain/event.payload';
+import { EventPayload, EventType } from 'src/domain/event-payload';
 
 @Injectable()
 export class MailService {
@@ -18,7 +18,10 @@ export class MailService {
       port: Number(this.config.get('SMTP_PORT') || 1025),
       secure: false,
       auth: this.config.get('SMTP_USER')
-        ? { user: this.config.get('SMTP_USER'), pass: this.config.get('SMTP_PASS') }
+        ? {
+            user: this.config.get('SMTP_USER'),
+            pass: this.config.get('SMTP_PASS'),
+          }
         : undefined,
     });
   }
@@ -43,7 +46,10 @@ export class MailService {
   }
 
   async sendByEvent(event: EventPayload) {
-    const templateName = event.eventType === EventType.VIDEO_PROCESSED ? 'video_processed' : 'video_failed';
+    const templateName =
+      event.eventType === EventType.VIDEO_PROCESSED
+        ? 'video_processed'
+        : 'video_failed';
     const compile = await this.loadTemplate(templateName);
     const html = compile({ user: event.user, data: event.data });
     const subject =
