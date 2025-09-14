@@ -1,0 +1,11 @@
+<!doctype html>
+<html>
+  <body>
+    <p>Olá {{user.name}},</p>
+    <p>Seu vídeo "<strong>{{data.videoTitle}}</strong>" (ID: {{data.videoId}}) foi processado com sucesso ✅.</p>
+    {{#if data.videoUrl}}
+      <p><a href="{{data.videoUrl}}">Clique aqui para ver</a></p>
+    {{/if}}
+    <p>Att,<br/>Equipe Notification Service</p>
+  </body>
+</html>
