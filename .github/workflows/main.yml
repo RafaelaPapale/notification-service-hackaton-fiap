@@ -7,38 +7,8 @@ on:
 jobs:
   build-and-deploy-sim:
     runs-on: ubuntu-latest
-    services:
-      zookeeper:
-        image: bitnami/zookeeper:latest
-        ports: ['2181:2181']
-        options: >-
-          --health-cmd "echo ruok | nc localhost 2181" 
-          --health-interval 5s
-          --health-timeout 5s
-          --health-retries 5
-
-      kafka:
-        image: bitnami/kafka:latest
-        ports: ['9092:9092']
-        options: >-
-          --health-cmd "kafka-topics.sh --bootstrap-server localhost:9092 --list" 
-          --health-interval 5s
-          --health-timeout 5s
-          --health-retries 5
-        env:
-          KAFKA_BROKER_ID: 1
-          KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-          KAFKA_LISTENERS: PLAINTEXT://:9092
-          KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
-          ALLOW_PLAINTEXT_LISTENER: yes
-
-      mailhog:
-        image: mailhog/mailhog
-        ports: ['8025:8025', '1025:1025']
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -51,12 +21,13 @@ jobs:
       - name: Build NestJS project
         run: npm run build
 
-      - name: Run docker-compose
+      - name: Start docker-compose services
         run: |
           docker-compose up -d
           docker-compose ps
+          sleep 20  # esperar zookeeper/kafka subirem
 
       - name: Run deploy
         run: |
-          echo "Simulando deploy na AWS..."
+          echo "Deploy na AWS..."
           echo "Serviço subiu com sucesso!"
