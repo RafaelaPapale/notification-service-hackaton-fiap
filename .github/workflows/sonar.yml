@@ -62,7 +62,7 @@ jobs:
         with:
           args: >
             -Dsonar.projectKey=RafaelaPapale_notification-service-hackaton-fiap
-            -Dsonar.organization=RafaelaPapale
+            -Dsonar.organization=rafaelapapale
             -Dsonar.sources=src
             -Dsonar.tests=test
             -Dsonar.test.inclusions=**/*.spec.ts
