@@ -159,3 +159,7 @@ Use [Handlebars](https://handlebarsjs.com/) para personalizar os templates.
 * Integração com provedores de e-mail em produção (SendGrid, SES, etc).
 
 ---
+
+## Documentação arquitetura completa
+* [Documentação da arquitetura](https://separate-need-7b9.notion.site/Documenta-o-de-Arquitetura-Sistema-de-Upload-e-Processamento-de-V-deos-27ce2bf90533801ea543d4134119d64d?source=copy_link)
+* [Miro](https://miro.com/app/board/uXjVJQ6-pfg=/?share_link_id=741786354310)
