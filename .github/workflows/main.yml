@@ -23,8 +23,8 @@ jobs:
 
       - name: Start docker-compose services
         run: |
-          docker-compose up -d
-          docker-compose ps
+          docker compose up -d
+          docker compose ps
           sleep 20  # esperar zookeeper/kafka subirem
 
       - name: Run deploy
