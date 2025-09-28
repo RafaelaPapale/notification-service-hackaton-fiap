@@ -58,14 +58,15 @@ jobs:
         run: npm ci
 
       - name: Run SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@ffc3010689be73b8e5ae0c57ce35968afd7909e8
+        uses: sonarsource/sonarqube-scan-action@v5
         with:
-          projectKey: RafaelaPapale_notification-service-hackaton-fiap 
-          organization: RafaelaPapale
-          extra-properties: |
-            sonar.sources=src
-            sonar.tests=test
-            sonar.test.inclusions=**/*.spec.ts
-            sonar.javascript.lcov.reportPaths=coverage/lcov.info
+          args: >
+            -Dsonar.projectKey=RafaelaPapale_notification-service-hackaton-fiap
+            -Dsonar.organization=RafaelaPapale
+            -Dsonar.sources=src
+            -Dsonar.tests=test
+            -Dsonar.test.inclusions=**/*.spec.ts
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
