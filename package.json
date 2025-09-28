@@ -87,6 +87,7 @@
       "src/config/.*\\.config\\.ts$"
     ],
     "coverageDirectory": "./coverage",
+    "coverageReporters": ["text", "lcov"],
     "testEnvironment": "node"
   }
 }
