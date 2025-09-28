@@ -62,5 +62,10 @@ jobs:
         with:
           projectKey: RafaelaPapale_notification-service-hackaton-fiap 
           organization: RafaelaPapale
+          extra-properties: |
+            sonar.sources=src
+            sonar.tests=test
+            sonar.test.inclusions=**/*.spec.ts
+            sonar.javascript.lcov.reportPaths=coverage/lcov.info
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
