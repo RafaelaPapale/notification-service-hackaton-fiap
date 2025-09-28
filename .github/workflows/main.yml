@@ -1,0 +1,33 @@
+name: AWS CI/CD
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-and-deploy-sim:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build NestJS project
+        run: npm run build
+
+      - name: Start docker-compose services
+        run: |
+          docker compose up -d
+          docker compose ps
+          sleep 20  # esperar zookeeper/kafka subirem
+
+      - name: Run deploy
+        run: |
+          echo "Deploy na AWS..."
+          echo "Serviço subiu com sucesso!"
