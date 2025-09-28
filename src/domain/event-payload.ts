@@ -1,6 +1,6 @@
 export enum EventType {
-  VIDEO_PROCESSED = 'VIDEO_PROCESSED',
-  VIDEO_FAILED = 'VIDEO_FAILED',
+  VIDEO_PROCESSED = "VIDEO_PROCESSED",
+  VIDEO_FAILED = "VIDEO_FAILED",
 }
 
 export interface UserDTO {

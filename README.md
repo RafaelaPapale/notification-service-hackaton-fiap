@@ -26,9 +26,12 @@ Também permite disparar notificações manualmente por endpoint HTTP.
 
 src/
 domain/            # entidades e regras de negócio
-application/       # casos de uso
+application/       
+  interfaces/
+    dto/
+    controllers/ 
+  use-cases/ # casos de uso
 infrastructure/    # kafka, mail, controllers
-dto/               # validações de entrada
 main.ts
 app.module.ts
 templates/           # templates Handlebars para e-mail
@@ -50,10 +53,10 @@ templates/           # templates Handlebars para e-mail
 Clone o repositório e instale dependências:
 
 ```bash
-git clone git@github.com:seuuser/notification-service.git
-cd notification-service
+git clone git@github.com:FIAP-Tech-Challenge-SOAT-10/notification-service-hackaton.git
+cd notification-service-hackaton
 npm install
-````
+```
 
 ---
 

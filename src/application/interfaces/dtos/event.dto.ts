@@ -1,12 +1,12 @@
-import { Type } from 'class-transformer';
+import { Type } from "class-transformer";
 import {
   IsString,
   IsEmail,
   IsEnum,
   ValidateNested,
   IsObject,
-} from 'class-validator';
-import { EventType } from 'src/domain/event-payload';
+} from "class-validator";
+import { EventType } from "src/domain/event-payload";
 
 class UserDto {
   @IsString()
