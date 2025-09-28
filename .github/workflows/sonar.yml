@@ -58,7 +58,7 @@ jobs:
         run: npm ci
 
       - name: Run SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@ffc3010
+        uses: sonarsource/sonarcloud-github-action@ffc3010689be73b8e5ae0c57ce35968afd7909e8
         with:
           projectKey: RafaelaPapale_notification-service-hackaton-fiap 
           organization: RafaelaPapale
