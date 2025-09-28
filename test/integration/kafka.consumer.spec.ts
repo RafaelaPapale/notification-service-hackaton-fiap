@@ -72,6 +72,9 @@ describe("KafkaConsumerService (integração)", () => {
   });
 
   it("deve processar mensagem Kafka e enviar e-mail", async () => {
+    // Await a resolved promise to use the async context
+    await Promise.resolve();
+
     expect(mockMailService.sendByEvent).toHaveBeenCalledTimes(1);
 
     const calledWith = mockMailService.sendByEvent.mock
